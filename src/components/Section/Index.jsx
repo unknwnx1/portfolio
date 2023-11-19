@@ -1,4 +1,13 @@
+import { motion } from 'framer-motion'
+
 export default function Section() {
+  const text = 'Frontend & Backend developer'
+  const textArray = text.split('')
+  const variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  }
+
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="max-w-xl sm:mx-auto lg:max-w-2xl">
@@ -45,9 +54,21 @@ export default function Section() {
                     height="24"
                   />
                 </svg>
-                <span className="relative">Frontend</span>
+                <span className="relative">Hi I'm</span>
               </span>{' '}
-              Developer & Backend Developer
+              {textArray.map((letter, index) => {
+                return (
+                  <motion.span
+                    key={index}
+                    variants={variants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    {letter}
+                  </motion.span>
+                )
+              })}
             </h2>
             <p className="text-base text-gray-700 md:text-lg">
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem

@@ -2,22 +2,29 @@ import Navbar from '../../components/Layouts/Navbar'
 import Footer from '../../components/Layouts/Footer'
 import ProjectsLoading from '../../components/Projects'
 import { useState, useEffect } from 'react'
-import fotoProject1 from '../../assets/images/desa.png'
-import fotoProject2 from '../../assets/images/portfolio-web.png'
 import { motion } from 'framer-motion'
+import ApiSupabase from '../../services/Api'
+
 export default function ProjectsIndex() {
-  const [loadingProject, setLoadingProject] = useState(false)
+  const url = import.meta.env.VITE_URL_SUPABASE
+  const apiSupabase = import.meta.env.VITE_API_SUPABASE
+  const api = new ApiSupabase(url, apiSupabase)
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState([])
 
-  const handlerLoading = () => {
+  const fetchData = async () => {
     setTimeout(() => {
-      setLoadingProject(true)
-    }, 3000)
+      setLoading(true)
+    }, 2000)
+    await api.fetchDataAll('projects').then((response) => {
+      setData(response)
+    })
 
-    setLoadingProject(false)
+    setLoading(false)
   }
 
   useEffect(() => {
-    handlerLoading()
+    fetchData()
   }, [])
   return (
     <>
@@ -72,108 +79,38 @@ export default function ProjectsIndex() {
             <hr className="w-full my-8 border-gray-300" />
           </div>
         </div>
-        {/* testing */}
-        {loadingProject ? (
-          <div className="grid gap-5 row-gap-5 mb-8 lg:grid-cols-4 sm:grid-cols-2 -mt-10">
-            <a
-              href="https://desa.riandev.web.id"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="View Item"
-              className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
-            >
-              <div className="flex flex-col h-full">
-                <img
-                  src={fotoProject1}
-                  className="object-cover w-full h-48"
-                  alt=""
-                />
-                <div className="flex-grow border border-t-0 rounded-b">
-                  <div className="p-5">
-                    <h6 className="mb-2 font-bold leading-5">
-                      Desa Santri Project
-                    </h6>
-                    <p className="text-sm text-gray-900 font-semibold">
-                      ReactJS + Vite , React Bootstrap , Laravel , Mysql
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </a>
 
-            <a
-              href="https://riandev.web.id"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="View Item"
-              className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
-            >
-              <div className="flex flex-col h-full">
-                <img
-                  src={fotoProject2}
-                  className="object-cover w-full h-48"
-                  alt=""
-                />
-                <div className="flex-grow border border-t-0 rounded-b">
-                  <div className="p-5">
-                    <h6 className="mb-2 font-bold leading-5">
-                      Website Portfolio
-                    </h6>
-                    <p className="text-sm text-gray-900 font-semibold">
-                      ReactJS + Vite , Tailwind
-                    </p>
+        {loading ? (
+          <div className="grid gap-5 row-gap-5 mb-8 lg:grid-cols-4 sm:grid-cols-2 -mt-10">
+            {data &&
+              data.map((index, key) => (
+                <a
+                  key={key}
+                  href={index.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="View Item"
+                  className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
+                >
+                  <div className="flex flex-col h-full">
+                    <img
+                      src={index.image}
+                      className="object-cover w-full h-48"
+                      alt=""
+                    />
+                    <div className="flex-grow border border-t-0 rounded-b">
+                      <div className="p-5">
+                        <h6 className="mb-2 font-bold leading-5">
+                          {index.title}
+                        </h6>
+                        <p className="text-sm text-gray-900 font-semibold">
+                          {index.deskripsi}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </a>
-            <a
-              href="/"
-              aria-label="View Item"
-              className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
-            >
-              <div className="flex flex-col h-full">
-                <img
-                  src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
-                  className="object-cover w-full h-48"
-                  alt=""
-                />
-                <div className="flex-grow border border-t-0 rounded-b">
-                  <div className="p-5">
-                    <h6 className="mb-2 font-semibold leading-5">
-                      They urge you
-                    </h6>
-                    <p className="text-sm text-gray-900">
-                      A flower in my garden, a mystery in my panties. Heart
-                      attack never stopped old Big Bear.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </a>
-            <a
-              href="/"
-              aria-label="View Item"
-              className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
-            >
-              <div className="flex flex-col h-full">
-                <img
-                  src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
-                  className="object-cover w-full h-48"
-                  alt=""
-                />
-                <div className="flex-grow border border-t-0 rounded-b">
-                  <div className="p-5">
-                    <h6 className="mb-2 font-semibold leading-5">
-                      Baseball ipsum dolor
-                    </h6>
-                    <p className="text-sm text-gray-900">
-                      Bro ipsum dolor sit amet gaper backside single track,
-                      manny Bike epic clipless. Schraeder drop gondy.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </a>
+                </a>
+              ))}
           </div>
         ) : (
           <ProjectsLoading />
