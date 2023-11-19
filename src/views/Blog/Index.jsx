@@ -2,10 +2,12 @@ import Footer from '../../components/Layouts/Footer'
 import Navbar from '../../components/Layouts/Navbar'
 import BlogLoading from '../../components/Projects/hiddenBlog'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import ApiSupabase from '../../services/Api'
 
 export default function BlogIndex() {
-  const apiNews = import.meta.env.VITE_API_NEWS
+  const apiSupabase = import.meta.env.VITE_API_SUPABASE
+  const url = import.meta.env.VITE_URL_SUPABASE
+  const api = new ApiSupabase(url, apiSupabase)
   const [loadingBlog, setLoadingBlog] = useState(false)
   const [data, setData] = useState([])
 
@@ -14,16 +16,9 @@ export default function BlogIndex() {
       setTimeout(() => {
         setLoadingBlog(true)
       }, 1000)
-      const berita = await axios.get(
-        `https://newsapi.org/v2/everything?q=polisi&language=id&apiKey=${apiNews}`,
-      )
-      const response = await berita.data
-      setData(response.articles)
-      // const berita = await gotScraping(
-      //   `https://newsapi.org/v2/everything?q=polisi&language=id&apiKey=${apiNews}`,
-      // )
-      // const response = JSON.parse(berita.body)
-      // setData(response.articles)
+      await api.fetchDataAll('blog').then((response) => {
+        setData(response)
+      })
     } catch (error) {
       console.log(error)
     }
@@ -54,14 +49,14 @@ export default function BlogIndex() {
                     aria-label="Article"
                   >
                     <img
-                      src={index.urlToImage}
+                      src={index.url_image}
                       className="object-cover w-full h-64 rounded"
                       alt=""
                     />
                   </a>
                   <div className="py-5">
                     <p className="mb-2 text-xs font-semibold text-gray-600 uppercase">
-                      {index.publishedAt.split('T')[0]}
+                      {index.update_at}
                     </p>
                     <a
                       href="/"
@@ -72,7 +67,7 @@ export default function BlogIndex() {
                         {index.title}
                       </p>
                     </a>
-                    <p className="mb-4 text-gray-700">{index.description}</p>
+                    <p className="mb-4 text-gray-700">{index.deskripsi}</p>
                     <div className="flex space-x-4">
                       <a
                         href="/"
