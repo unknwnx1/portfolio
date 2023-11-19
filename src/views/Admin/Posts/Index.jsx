@@ -1,5 +1,3 @@
-'use client'
-
 import Navbar from '../../../components/Admin/Layout/Navbar'
 import Footer from '../../../components/Admin/Layout/Footer'
 import {
