@@ -77,11 +77,11 @@ export default function Navbar() {
               onClick={() => navigate('/admin')}
               className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:text-white"
             >
-              Home
+              Dashboard
             </a>
             <a
               href="#"
-              onClick={() => navigate('/admin/project/create')}
+              onClick={() => navigate('/admin/project')}
               className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:text-white"
             >
               Projects
@@ -135,11 +135,11 @@ export default function Navbar() {
                     onClick={() => navigate('/admin')}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
-                    Home
+                    Dashboard
                   </a>
                   <a
                     href="#"
-                    onClick={() => navigate('/admin/project/create')}
+                    onClick={() => navigate('/admin/project')}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Projects
