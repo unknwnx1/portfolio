@@ -20,7 +20,6 @@ import { useNavigate } from 'react-router-dom'
 import { DeleteIcon } from '@chakra-ui/icons'
 import toast from 'react-hot-toast'
 import ApiSupabase from '../../../services/Api'
-import Cookies from 'js-cookie'
 import { useState, useEffect } from 'react'
 
 export default function ProjectIndex() {
@@ -28,10 +27,6 @@ export default function ProjectIndex() {
   const apiSupabase = import.meta.env.VITE_API_SUPABASE
   const api = new ApiSupabase(url, apiSupabase)
   const navigate = useNavigate()
-  const token = Cookies.get('token')
-  if (!token) {
-    navigate('/login')
-  }
 
   const [data, setData] = useState([])
 

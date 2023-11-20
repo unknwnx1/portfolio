@@ -23,12 +23,9 @@ export default function Home() {
   const url = import.meta.env.VITE_URL_SUPABASE
   const apiSupabase = import.meta.env.VITE_API_SUPABASE
   const api = new ApiSupabase(url, apiSupabase)
-  const token = Cookies.get('token')
+
   const user = Cookies.get('user')
   const navigate = useNavigate()
-  if (!token) {
-    navigate('/login')
-  }
 
   const [countProject, setCountProject] = useState('')
   const [countBlog, setCountBlog] = useState('')

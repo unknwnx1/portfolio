@@ -43,9 +43,9 @@ export default class ApiSupabase {
       console.log(error)
     }
   }
-  async fetchDataTarget (table, id) {
+  async fetchDataTarget (table, colums, value) {
     try {
-      const { data, error } = await this.client.from(table).select('*').eq('id', id)
+      const { data, error } = await this.client.from(table).select('*').eq(colums, value)
       if (data) {
         return data
       } else {
@@ -68,9 +68,9 @@ export default class ApiSupabase {
     }
   }
 
-  async updateData (table, id, formData) {
+  async updateData (table, id, jsonData) {
     try {
-      const { data, error } = await this.client.from(table).update(formData).eq('id', id)
+      const { data, error } = await this.client.from(table).update(jsonData).eq('id', id)
       if (data) {
         return data
       } else {
@@ -81,9 +81,9 @@ export default class ApiSupabase {
     }
   }
 
-  async deleteData (table, id) {
+  async deleteData (table, colums, value) {
     try {
-      const { error } = await this.client.from(table).delete().eq('id', id)
+      const { error } = await this.client.from(table).delete().eq(`${colums}`, `${value}`)
       return error
     } catch (error) {
       console.log(error)

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Popover } from '@headlessui/react'
 import Portfolio from '../../assets/images/portfolio.png'
@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const navigate = useNavigate()
+
   return (
     <motion.div
       initial="hidden"
@@ -33,15 +33,17 @@ export default function Navbar() {
           aria-label="Global"
         >
           <div className="flex lg:flex-1">
-            <a href="#" onClick={() => navigate('/')} className="-m-1.5 p-1.5">
-              <span className="sr-only">rianDev</span>
-              <img
-                className="h-10 w-auto"
-                // src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                src={Portfolio}
-                alt=""
-              />
-            </a>
+            <Link to={'/'}>
+              <a className="-m-1.5 p-1.5">
+                <span className="sr-only">rianDev</span>
+                <img
+                  className="h-10 w-auto"
+                  // src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  src={Portfolio}
+                  alt=""
+                />
+              </a>
+            </Link>
           </div>
           <div className="flex lg:hidden">
             <button
@@ -54,38 +56,30 @@ export default function Navbar() {
             </button>
           </div>
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
-            <a
-              href="#"
-              onClick={() => navigate('/projects')}
-              className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:text-white"
-            >
-              Projects
-            </a>
+            <Link to={'/projects'}>
+              <a className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:text-white">
+                Projects
+              </a>
+            </Link>
+            <Link to={'/blog'}>
+              <a className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-4 py-1 rounded-md hover:text-white">
+                Blog
+              </a>
+            </Link>
 
             <a
-              href="#"
-              onClick={() => navigate('/blog')}
-              className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-4 py-1 rounded-md hover:text-white"
-            >
-              Blog
-            </a>
-
-            <a
-              href="#"
-              onClick={() => navigate('/login')}
+              href="/#contact"
               className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:text-white"
             >
               Contact
             </a>
           </Popover.Group>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a
-              href="#"
-              onClick={() => navigate('/login')}
-              className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:animate-bounce hover:text-white"
-            >
-              Log in <span aria-hidden="true">&rarr;</span>
-            </a>
+            <Link to={'/login'}>
+              <a className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:animate-bounce hover:text-white">
+                Log in <span aria-hidden="true">&rarr;</span>
+              </a>
+            </Link>
           </div>
         </nav>
         <Dialog
@@ -97,10 +91,11 @@ export default function Navbar() {
           <div className="fixed inset-0 z-10" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img className="h-10 w-auto" src={Portfolio} alt="" />
-              </a>
+              <Link to={'/'}>
+                <a className="-m-1.5 p-1.5">
+                  <img className="h-10 w-auto" src={Portfolio} alt="" />
+                </a>
+              </Link>
               <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -113,36 +108,28 @@ export default function Navbar() {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
-                  <a
-                    href="#"
-                    onClick={() => navigate('/projects')}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Projects
-                  </a>
-                  <a
-                    href="#"
-                    onClick={() => navigate('/blog')}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Blog
-                  </a>
-                  <a
-                    href="#"
-                    onClick={() => navigate('/contact')}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Contact
-                  </a>
+                  <Link to={'/projects'}>
+                    <a className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                      Projects
+                    </a>
+                  </Link>
+                  <Link to={'/blog'}>
+                    <a className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                      Blog
+                    </a>
+                  </Link>
+                  <Link to={'/'}>
+                    <a className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                      Contact
+                    </a>
+                  </Link>
                 </div>
                 <div className="py-6">
-                  <a
-                    href="#"
-                    onClick={() => navigate('/login')}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Log in
-                  </a>
+                  <Link to={'/login'}>
+                    <a className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                      Log in
+                    </a>
+                  </Link>
                 </div>
               </div>
             </div>

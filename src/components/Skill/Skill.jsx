@@ -1,29 +1,39 @@
 import foto from '../../assets/images/program.gif'
+import { useEffect } from 'react'
+import Aos from 'aos'
+import 'aos/dist/aos.css'
 
 export default function Skill() {
+  useEffect(() => {
+    Aos.init()
+  }, [])
   return (
-    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 -mt-20">
+    <div
+      data-aos="flip-right"
+      data-aos-duration="2000"
+      className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 -mt-20"
+    >
       <div className="p-8 rounded shadow-xl sm:p-16">
         <div className="grid gap-5 row-gap-10 lg:grid-cols-2">
           <div className="flex flex-col justify-center ">
             <div className="max-w-xl mb-6">
               <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
-                Skill yang <br className="hidden md:block" />
-                saya{' '}
+                About <br className="hidden md:block" />
+                my{' '}
                 <span className="relative px-1">
                   <div className="absolute inset-x-0 bottom-0 h-3 transform -skew-x-12 bg-teal-accent-400" />
                   <span className="relative inline-block text-deep-purple-accent-400">
-                    Kuasai
+                    skills
                   </span>
                 </span>
               </h2>
               <p className="text-base text-gray-700 md:text-lg">
-                Beberapa skill yang saya kuasai sebagai frontend & backend
+                Several skills that I have mastered as a frontend & backend
                 developer
               </p>
             </div>
             <p className="mb-4 text-sm font-bold tracking-widest uppercase">
-              Skill
+              Skills
             </p>
             <div className="grid space-y-3 sm:gap-2 sm:grid-cols-2 sm:space-y-0">
               <ul className="space-y-3">

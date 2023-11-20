@@ -3,11 +3,13 @@ import Navbar from '../../components/Layouts/Navbar'
 import BlogLoading from '../../components/Projects/hiddenBlog'
 import { useState, useEffect } from 'react'
 import ApiSupabase from '../../services/Api'
+import { Link } from 'react-router-dom'
 
 export default function BlogIndex() {
   const apiSupabase = import.meta.env.VITE_API_SUPABASE
   const url = import.meta.env.VITE_URL_SUPABASE
   const api = new ApiSupabase(url, apiSupabase)
+
   const [loadingBlog, setLoadingBlog] = useState(false)
   const [data, setData] = useState([])
 
@@ -42,35 +44,31 @@ export default function BlogIndex() {
                   key={key}
                   className="overflow-hidden transition-shadow duration-300 bg-white rounded"
                 >
-                  <a
-                    href={index.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Article"
-                  >
-                    <img
-                      src={index.url_image}
-                      className="object-cover w-full h-64 rounded"
-                      alt=""
-                    />
-                  </a>
+                  <Link to={`/blog/${index.slug}`}>
+                    <a rel="noreferrer" aria-label="Article">
+                      <img
+                        src={index.url_image}
+                        className="object-cover w-full h-64 rounded"
+                        alt=""
+                      />
+                    </a>
+                  </Link>
                   <div className="py-5">
                     <p className="mb-2 text-xs font-semibold text-gray-600 uppercase">
-                      {index.update_at}
+                      {index.update_at.split('T')[0]}
                     </p>
-                    <a
-                      href="/"
+                    <Link
+                      to={`/blog/${index.slug}`}
                       aria-label="Article"
                       className="inline-block mb-3 text-black transition-colors duration-200 hover:text-deep-purple-accent-700"
                     >
                       <p className="text-2xl font-bold leading-5">
                         {index.title}
                       </p>
-                    </a>
+                    </Link>
                     <p className="mb-4 text-gray-700">{index.deskripsi}</p>
                     <div className="flex space-x-4">
                       <a
-                        href="/"
                         aria-label="Likes"
                         className="flex items-start text-gray-800 transition-colors duration-200 hover:text-deep-purple-accent-700 group"
                       >

@@ -23,11 +23,7 @@ export default function ProjectCreate() {
   const apiSupabase = import.meta.env.VITE_API_SUPABASE
   const api = new ApiSupabase(url, apiSupabase)
   const navigate = useNavigate()
-  const token = Cookies.get('token')
   const user = Cookies.get('user')
-  if (!token) {
-    navigate('/login')
-  }
   const [isLoading, setIsLoading] = useState(false)
   const [image, setImage] = useState('')
   const [deskripsi, setDeskripsi] = useState('')
@@ -72,6 +68,7 @@ export default function ProjectCreate() {
 
     setIsLoading(false)
   }
+
   return (
     <>
       <Navbar />
