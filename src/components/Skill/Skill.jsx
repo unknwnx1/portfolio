@@ -9,8 +9,8 @@ export default function Skill() {
   }, [])
   return (
     <div
-      data-aos="flip-right"
-      data-aos-duration="2000"
+      data-aos="fade-right"
+      data-aos-duration="1000"
       className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 -mt-20"
     >
       <div className="p-8 rounded shadow-xl sm:p-16">

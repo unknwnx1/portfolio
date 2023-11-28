@@ -1,5 +1,9 @@
+import { useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../../../components/Admin/Layout/Navbar'
-import Footer from '../../../components/Admin/Layout/Footer'
+import Footer from '../../../components/Layouts/Footer'
+import { useState, useEffect } from 'react'
+import ApiSupabase from '../../../services/Api'
+import toast from 'react-hot-toast'
 import {
   Button,
   Card,
@@ -11,24 +15,20 @@ import {
   Input,
   SimpleGrid,
 } from '@chakra-ui/react'
-import toast from 'react-hot-toast'
-import ApiSupabase from '../../../services/Api'
-import Cookies from 'js-cookie'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { ArrowLeftIcon } from '@chakra-ui/icons'
 
-export default function ProjectCreate() {
-  const url = import.meta.env.VITE_URL_SUPABASE
+export default function EditProject() {
+  const api_url = import.meta.env.VITE_URL_SUPABASE
   const apiSupabase = import.meta.env.VITE_API_SUPABASE
-  const api = new ApiSupabase(url, apiSupabase)
+  const api = new ApiSupabase(api_url, apiSupabase)
   const navigate = useNavigate()
-  const user = Cookies.get('user')
+
+  const { id } = useParams()
   const [isLoading, setIsLoading] = useState(false)
+
   const [image, setImage] = useState('')
   const [deskripsi, setDeskripsi] = useState('')
   const [urlTarget, setUrl] = useState('')
-  const [title, setTitle] = useState('')
 
   function makeid(length) {
     let result = ''
@@ -43,33 +43,68 @@ export default function ProjectCreate() {
     return result
   }
 
-  const storeProject = async (e) => {
+  const fetchData = async () => {
+    await api.fetchDataTarget('projects', 'id', id).then((response) => {
+      if (response.length <= 0) {
+        toast.error('Failed fetch data!', {
+          position: 'top-right',
+          duration: 4000,
+        })
+        return navigate('/admin/project')
+      }
+      setUrl(response[0].url)
+      setDeskripsi(response[0].deskripsi)
+    })
+  }
+
+  const editProject = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     const hashName = makeid(10)
-    const data = {
-      image: `https://pdcsxrflkkoylwhpjyct.supabase.co/storage/v1/object/public/image/project/${hashName}.jpg`,
-      deskripsi: deskripsi,
-      url: urlTarget,
-      email: user,
-      title: title,
+    let data
+    if (image !== '') {
+      data = {
+        image: `https://pdcsxrflkkoylwhpjyct.supabase.co/storage/v1/object/public/image/project/${hashName}.jpg`,
+        deskripsi: deskripsi,
+        url: urlTarget,
+      }
+    } else {
+      data = {
+        deskripsi: deskripsi,
+        url: urlTarget,
+      }
     }
 
-    await api.insertData('projects', data).then(async () => {
-      await api
-        .uploadImage('image', 'project', hashName + '.jpg', image)
-        .then((response) => {
-          console.log(response)
-          toast.success('Successfully create projects!', {
-            position: 'top-right',
-            duration: 4000,
-          })
+    await api
+      .updateData('projects', id, data)
+      .then(async () => {
+        if (data.image) {
+          await api
+            .uploadImage('image', 'project', hashName + '.jpg', image)
+            .then((response) => {
+              console.log(response)
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+
+        toast.success('Successfully update projects', {
+          position: 'top-right',
+          duration: 4000,
         })
-      navigate('/admin/project')
-    })
+        navigate('/admin/project')
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
     setIsLoading(false)
   }
+
+  useEffect(() => {
+    fetchData()
+  }, [id])
 
   return (
     <>
@@ -94,24 +129,17 @@ export default function ProjectCreate() {
               <CardHeader fontFamily={'fantasy'} fontSize={'x-large'}>
                 Create Project
               </CardHeader>
-              <form onSubmit={storeProject}>
+              <form onSubmit={editProject}>
                 <FormControl>
                   <FormLabel>Image</FormLabel>
                   <Input
                     type="file"
-                    isRequired
                     mt={1}
                     onChange={(e) => setImage(e.target.files[0])}
                   ></Input>
-                  <FormLabel>Title</FormLabel>
-                  <Input
-                    type="text"
-                    isRequired
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  ></Input>
                   <FormLabel>Deskripsi</FormLabel>
                   <Input
+                    accept="images/*"
                     type="text"
                     isRequired
                     value={deskripsi}

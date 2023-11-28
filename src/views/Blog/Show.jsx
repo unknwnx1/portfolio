@@ -9,7 +9,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import ApiSupabase from '../../services/Api'
 import Aos from 'aos'
 import 'aos/dist/aos.css'

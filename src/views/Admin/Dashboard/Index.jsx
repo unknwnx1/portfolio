@@ -50,7 +50,7 @@ export default function Home() {
 
   const getCountBlog = async () => {
     await api
-      .getCountData('posts')
+      .getCountData('blog')
       .then((response) => {
         setCountBlog(response)
       })

@@ -3,6 +3,7 @@ import {
   AlertIcon,
   AlertTitle,
   Button,
+  ButtonGroup,
   Image,
   Table,
   TableCaption,
@@ -17,7 +18,7 @@ import {
 import Footer from '../../../components/Admin/Layout/Footer'
 import Navbar from '../../../components/Admin/Layout/Navbar'
 import { useNavigate } from 'react-router-dom'
-import { DeleteIcon } from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import toast from 'react-hot-toast'
 import ApiSupabase from '../../../services/Api'
 import { useState, useEffect } from 'react'
@@ -38,7 +39,7 @@ export default function ProjectIndex() {
 
   const deleteProject = async (id) => {
     await api
-      .deleteData('projects', id)
+      .deleteData('projects', 'id', id)
       .then(async () => {
         toast.success('Successfully delete project!', {
           position: 'top-right',
@@ -76,6 +77,7 @@ export default function ProjectIndex() {
           <Thead>
             <Tr>
               <Th>Image</Th>
+              <Th>Title</Th>
               <Th>URL</Th>
               <Th>Deskripsi</Th>
               <Th>Uplink</Th>
@@ -90,20 +92,35 @@ export default function ProjectIndex() {
                   <Td>
                     <Image src={list.image} alt="Image Project" />
                   </Td>
+                  <Td>{list.title}</Td>
                   <Td>{list.url}</Td>
                   <Td>{list.deskripsi}</Td>
                   <Td>{list.email}</Td>
                   <Td>
-                    <Button
-                      bg={'red.500'}
-                      size={'sm'}
-                      textColor={'white'}
-                      onClick={() => deleteProject(list.id)}
-                    >
-                      <span>
-                        <DeleteIcon></DeleteIcon>
-                      </span>
-                    </Button>
+                    <ButtonGroup>
+                      <Button
+                        bg={'blue.500'}
+                        size={'sm'}
+                        textColor={'white'}
+                        onClick={() =>
+                          navigate(`/admin/project/edit/${list.id}`)
+                        }
+                      >
+                        <span>
+                          <EditIcon></EditIcon>
+                        </span>
+                      </Button>
+                      <Button
+                        bg={'red.500'}
+                        size={'sm'}
+                        textColor={'white'}
+                        onClick={() => deleteProject(list.id)}
+                      >
+                        <span>
+                          <DeleteIcon></DeleteIcon>
+                        </span>
+                      </Button>
+                    </ButtonGroup>
                   </Td>
                 </Tr>
               ))

@@ -27,9 +27,7 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const token = Cookies.get('token')
-  if (token) {
-    navigate('/admin')
-  }
+
   const loginPage = async (e) => {
     e.preventDefault()
     setIsLoading(true)
@@ -52,6 +50,9 @@ export default function Login() {
   }
 
   useEffect(() => {
+    if (token) {
+      navigate('/admin')
+    }
     Aos.init()
   }, [])
   return (

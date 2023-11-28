@@ -11,24 +11,38 @@ import {
   Input,
   SimpleGrid,
 } from '@chakra-ui/react'
-import toast from 'react-hot-toast'
-import ApiSupabase from '../../../services/Api'
-import Cookies from 'js-cookie'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 import { ArrowLeftIcon } from '@chakra-ui/icons'
+import ApiSupabase from '../../../services/Api'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
-export default function ProjectCreate() {
+export default function AdminBlogEdit() {
   const url = import.meta.env.VITE_URL_SUPABASE
   const apiSupabase = import.meta.env.VITE_API_SUPABASE
   const api = new ApiSupabase(url, apiSupabase)
   const navigate = useNavigate()
-  const user = Cookies.get('user')
   const [isLoading, setIsLoading] = useState(false)
   const [image, setImage] = useState('')
   const [deskripsi, setDeskripsi] = useState('')
-  const [urlTarget, setUrl] = useState('')
+  const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
+  const [data, setData] = useState([])
+
+  const { slug } = useParams()
+
+  function slugify(text) {
+    return text
+      .toString()
+      .toLowerCase()
+      .replace(/\s+/g, '-') // Replace spaces with -
+      .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+      .replace(/\-\-+/g, '-') // Replace multiple - with single -
+      .replace(/^-+/, '') // Trim - from start of text
+      .replace(/-+$/, '') // Trim - from end of text
+  }
 
   function makeid(length) {
     let result = ''
@@ -43,37 +57,70 @@ export default function ProjectCreate() {
     return result
   }
 
-  const storeProject = async (e) => {
+  const fetchData = async () => {
+    await api.fetchDataTarget('blog', 'slug', slug).then((response) => {
+      setDeskripsi(response[0].deskripsi)
+      setTitle(response[0].title)
+      setContent(response[0].content)
+      setData(response)
+    })
+  }
+
+  const storeBlog = async (e) => {
     e.preventDefault()
     setIsLoading(true)
+    const date = new Date()
+    const updateAt = `${date.getFullYear()}-${
+      date.getMonth() + 1
+    }-${date.getDate()}`
     const hashName = makeid(10)
-    const data = {
-      image: `https://pdcsxrflkkoylwhpjyct.supabase.co/storage/v1/object/public/image/project/${hashName}.jpg`,
-      deskripsi: deskripsi,
-      url: urlTarget,
-      email: user,
+    const dataJson = {
       title: title,
+      deskripsi: deskripsi,
+      url_image: `https://pdcsxrflkkoylwhpjyct.supabase.co/storage/v1/object/public/image/blog/${hashName}.jpg`,
+      update_at: updateAt,
+      content: content,
+      slug: slugify(title),
     }
-
-    await api.insertData('projects', data).then(async () => {
-      await api
-        .uploadImage('image', 'project', hashName + '.jpg', image)
-        .then((response) => {
-          console.log(response)
-          toast.success('Successfully create projects!', {
-            position: 'top-right',
-            duration: 4000,
+    await api
+      .updateData('blog', data[0].id, dataJson)
+      .then(async () => {
+        await api
+          .uploadImage('image', 'blog', hashName + '.jpg', image)
+          .then(() => {
+            toast.success('Successfully posts content blog!', {
+              position: 'top-right',
+              duration: 4000,
+            })
+            navigate('/admin/blog')
           })
+          .catch((err) => {
+            console.log(err)
+            toast.error(err.message, {
+              position: 'top-right',
+              duration: 4000,
+            })
+          })
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error(err.message, {
+          position: 'top-right',
+          duration: 4000,
         })
-      navigate('/admin/project')
-    })
+      })
 
     setIsLoading(false)
   }
 
+  useEffect(() => {
+    fetchData()
+  }, [slug])
+
   return (
     <>
       <Navbar />
+
       <Container maxW={'container.md'} mt={5}>
         <SimpleGrid>
           <Button
@@ -81,7 +128,7 @@ export default function ProjectCreate() {
             mb={1}
             float={'right'}
             textColor={'white'}
-            onClick={() => navigate('/admin/project/')}
+            onClick={() => navigate('/admin/blog/')}
             maxW={'80px'}
             size={'sm'}
           >
@@ -89,18 +136,19 @@ export default function ProjectCreate() {
               <ArrowLeftIcon></ArrowLeftIcon> Back
             </span>
           </Button>
+
           <Card>
             <CardBody>
-              <CardHeader fontFamily={'fantasy'} fontSize={'x-large'}>
-                Create Project
-              </CardHeader>
-              <form onSubmit={storeProject}>
+              <form onSubmit={storeBlog}>
                 <FormControl>
+                  <CardHeader fontFamily={'fantasy'} fontSize={'x-large'}>
+                    Create Blog Content
+                  </CardHeader>
                   <FormLabel>Image</FormLabel>
                   <Input
                     type="file"
-                    isRequired
                     mt={1}
+                    isRequired
                     onChange={(e) => setImage(e.target.files[0])}
                   ></Input>
                   <FormLabel>Title</FormLabel>
@@ -117,14 +165,17 @@ export default function ProjectCreate() {
                     value={deskripsi}
                     onChange={(e) => setDeskripsi(e.target.value)}
                   ></Input>
-
-                  <FormLabel>URL</FormLabel>
-                  <Input
-                    type="text"
-                    isRequired
-                    value={urlTarget}
-                    onChange={(e) => setUrl(e.target.value)}
-                  ></Input>
+                  <div className="mb-3">
+                    <FormLabel className="form-label fw-bold">
+                      Content
+                    </FormLabel>
+                    <ReactQuill
+                      theme="snow"
+                      rows="5"
+                      value={content}
+                      onChange={(content) => setContent(content)}
+                    />
+                  </div>
                   <Button
                     isDisabled={isLoading}
                     w={'full'}

@@ -20,7 +20,10 @@ export default class ApiSupabase {
   }
   async fetchDataAll (table) {
     try {
-      const { data, error } = await this.client.from(table).select('*')
+      const { data, error } = await this.client
+        .from(table)
+        .select('*')
+        .order('id', { ascending: false })
       if (data) {
         return data
       } else {
@@ -33,7 +36,11 @@ export default class ApiSupabase {
 
   async fetchWithPagination (table, minRange, maxRange) {
     try {
-      const { data, error } = await this.client.from(table).select('*').range(minRange, maxRange)
+      const { data, error } = await this.client
+        .from(table)
+        .select('*')
+        .range(minRange, maxRange)
+        .order('id', { ascending: false })
       if (data) {
         return data
       } else {

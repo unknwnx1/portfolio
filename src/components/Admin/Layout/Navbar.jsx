@@ -73,14 +73,14 @@ export default function Navbar() {
           </div>
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <a
-              href="#"
+              href=""
               onClick={() => navigate('/admin')}
               className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:text-white"
             >
               Dashboard
             </a>
             <a
-              href="#"
+              href=""
               onClick={() => navigate('/admin/project')}
               className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:text-white"
             >
@@ -88,8 +88,8 @@ export default function Navbar() {
             </a>
 
             <a
-              href="#"
-              onClick={() => navigate('/admin/blog/create')}
+              href=""
+              onClick={() => navigate('/admin/blog')}
               className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-4 py-1 rounded-md hover:text-white"
             >
               Blog
@@ -97,7 +97,7 @@ export default function Navbar() {
           </Popover.Group>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <a
-              href="#"
+              href=""
               onClick={() => logout()}
               className="text-sm font-semibold leading-6 text-gray-900  hover:bg-deep-purple-accent-400 px-1 py-1 rounded-md hover:animate-bounce hover:text-white"
             >

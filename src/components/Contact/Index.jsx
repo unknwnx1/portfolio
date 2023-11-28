@@ -75,7 +75,7 @@ export default function ContactFormWithSocialButtons() {
   }, [])
 
   return (
-    <div data-aos="flip-right" data-aos-duration="1000" id="contact">
+    <div data-aos="fade-left" data-aos-duration="1000" id="contact">
       <Flex
         //   bg={useColorModeValue('gray.100', 'gray.900')}
         align="center"
